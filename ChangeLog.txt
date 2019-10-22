@@ -1,0 +1,381 @@
+ChangeLog for AVS -- latest on top!
+
+==============================================================================
+AVS Release 4.8
+
+Date:	    19. November 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.8
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Refactor of handling of call types
+
+Hotfixes:	- Removed check for end-of-candidate during ICE
+		- Add support for openSL ES for Google Pixel 3
+		- Fix for muting output when silenced
+		- Fix for iOS crypto not supporting GCM
+		- Fix for iOS incorrectly setting videosend in group calls
+
+==============================================================================
+AVS Release 4.7
+
+Date:	    14. November 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.7
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Bug fixing
+		- Improvements to DNS lookup
+		- Improvements to network quality indicator
+
+Hotfixes:
+
+==============================================================================
+AVS Release 4.6
+
+Date:	    26. July 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.6
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Enable DNS lookup for TURN configurations (fixes IPv6 issues)
+		- Use TURN via TCP or TLS (requires calls/config/v2 BE endpoint)
+		- Bug fixes:
+			- iOS: AUDIO-1560
+
+Hotfixes:
+
+Aug 03, 2018    - Patched security issue in VP8
+                - Android: Fixed AUDIO-1486
+                - iOS: Crash fix when no outputs were available
+Sep 05, 2018	- SDP patch for Firefox compatibility
+		- Network quality handler
+		- bug fixes
+
+==============================================================================
+AVS Release 4.5
+
+Date:	    20. June 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.5
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Resolve TURN hostnames for both IPv4 and IPv6
+		- Add support for AES-GCM
+		- Add Netprobe functionality
+		- Bug fixes:
+			- Fix some incompatibilities with webapp
+			- Audio routing fixes
+			- More bug fixes
+
+Hotfixes:
+
+Jul 10, 2018	- Android: Fixes AUDIO-1512
+		- Android: Fixes AUDIO-1559
+		- Fixes logging issue
+
+==============================================================================
+AVS Release 4.4
+
+Date:	    27. April 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.4
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Signal video call at start of group call
+		- Support for audio only calls
+		- Support for DNS lookup of TURN severs
+		- Upgrade of libre
+
+Hotfixes:
+
+May 25, 2018	- Make protocol robust against join-leave-join in quick succession
+		- AUDIO-1474: UPDATE conflict is missed while gathering for UPDATE
+		- AUDIO-1515: GROUPSTART ignored for client when waiting for UPDATE response
+May 28, 2018	- Sending of DTLS packets to all peers
+
+==============================================================================
+AVS Release 4.3
+
+Date:	    12. April 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.3
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - TURN via TLS enabled
+		- Handle unknown TURN schemes
+		- Remove support for SHA-1 dtls fingerprints
+		- Enable multiple SRTP cipher suites
+		- Update OpenSSL to 1.1.0h
+		- Update rew
+
+Hotfixes:	- Android: Support for multiple renderers
+		- iOS: Fix audio message recording issue on simulator
+		- Remove all private information from log files
+
+==============================================================================
+AVS Release 4.2
+
+Date:	    28. Febrary 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.2
+Android:    Android NDK r14b
+iOS:	    iOS SDK 11.0
+OSX:	    MacOS SDK 10.13
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Roaming between different networks
+		- iOS: Support for different audio buffer sizes
+		- Android NDK update to r14b
+
+Hotfixes:
+
+Apr 09, 2018 	- Fix to failed calls reported to CS
+		- CBR is not enabled
+		- Potential crash while calling and cancelling quickly after
+
+==============================================================================
+AVS Release 4.1
+
+Date:	    29. January 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.1
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Improved BT handling (both iOS and Android)
+		- Increased ptime for group calling (also with Webapp)
+                - bug fixes
+
+Hotfixes:
+
+==============================================================================
+AVS Release 4.0
+
+Date:	    08. January 2018
+GIT:	    https://github.com/wearezeta/avs/tree/release-4.0
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Hydra
+                - ALERT method added
+                - Improvements to video handling
+                - openssl update
+                - usrsctp update
+                - generic-message-proto update
+                - libre update
+                - bug fixes
+
+Hotfixes:
+
+Jan 16, 2018 - Increase ptime for group calls
+Jan 10, 2018 - iOS: Recording API added for audio messages
+		
+==============================================================================
+AVS Release 3.8
+
+Date:	    06. November 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.8
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - SSL update
+                - Added support for multiple TURN servers
+                - DCE improvements
+                - bug fixes
+		
+==============================================================================
+AVS Release 3.7
+
+Date:	    27. October 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.7
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:        - Refactor of generic media manager
+                - Refactor of iOS media manager
+		
+==============================================================================
+AVS Release 3.6
+
+Date:	    07. August 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.6
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:       - Support for multiple (team) accounts
+		- Make GROUPCHECK messages transient
+		- Make calling messages targeted messages
+		- Updated Opus to version 1.2.1
+
+Hotfixes:
+
+Sep 29, 2017 - Rollback of WebRTC to AVS 3.5 version
+             - Refactor of CBR handling
+
+==============================================================================
+AVS Release 3.5
+
+Date:	    04. May 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.5
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:       - Speed up of call setup time (Crypto KASE or DH-SDES)
+		- Provide API for privacy mode
+		- Improved tracking and metrics
+		- Move playing of some audio notifications into AVS (AUDIO-918)
+		- Bug fixes
+			- iOS: Audio routing (AUDIO-1278)
+			- iOS: Crash fix (AUDIO-1277)
+			- various more
+
+Hotfixes:
+
+Aug 04, 2017 - Add more robustness for "fake" group and 1:1 call mixup
+Jul 28, 2017 - Make "join" button more stable
+
+==============================================================================
+AVS Release 3.4
+
+Date:	    24. April 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.4
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:       - Version 3 group calling
+		- BE switch removed for 1:1 C3 calls
+		- Update of VPx to fix potential security issue
+		- Update of WebRTC
+		- Bug fixes:
+			- BT on iOS
+			- Missing ringtone on Android
+			- More robust handling of calls/config
+			- many more
+
+==============================================================================
+AVS Release 3.3
+
+Date:	    24. February 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.3
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+Summary:       - Roaming / SDP Update support for calling3
+               - Use SDES between avs clients for faster call setup
+               - API for using constant bitrate audio
+               - mediaflow refactor
+
+==============================================================================
+AVS Release 3.2
+
+Date:	    02. February 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.2
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+
+Summary:       - DTLS optimizations
+               - mediaflow refactor
+               - C3: Forking and ICE checks
+               - Bug fixes
+
+==============================================================================
+AVS Release 3.1
+
+Date:	    05. January 2017
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.1
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+
+Summary:	- Bug fixes for CallKit (from 2.9 branch)
+		- Adjustment to AGC for conference calls (normalizer vs. digital AGC)
+		- C3 fixes: prop-sync, requested API changes/extensions,
+		  call states, callbacks, etc.
+		- Bug fixes
+
+==============================================================================
+AVS Release 3.0
+
+Date:	    28. October 2016
+GIT:	    https://github.com/wearezeta/avs/tree/release-3.0
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+
+Summary:	- Implementation of Calling 3 protocol
+
+==============================================================================
+AVS Release 2.9
+
+Date:	    21. September 2016
+GIT:	    https://github.com/wearezeta/avs/tree/release-2.9
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+
+Summary:	- Increased video quality (less frozen video)
+		- More stable call setup (less hanging in "connecting" state)
+		- TURN improvements (Call setup reliability)
+		- ICE improvements (Call setup reliability)
+		- Fixes to IPv6 handling (still known issue for NAT64 though)
+		- Data channel added (but not enabled yet)
+		- Improved audio filter (new effects + more intelligible robot voice)
+
+==============================================================================
+AVS Release 2.8
+
+Date:	    12. August 2016
+GIT:	    https://github.com/wearezeta/avs/tree/release-2.8
+Android:    Android NDK r12b
+iOS:	    iOS SDK 8.0
+OSX:	    OSX SDK 10.9
+Linux:	    Ubuntu x86_64 14.04 (LTS)
+
+
+Summary:	- Android now uses NDK r12b.
+		- Use desktop digital AGC on mobile, to reduce noise amplification.
+		- Added option for audio effects in calls.
+		- Added new audio effects. Auto-tune and pitch up_down.
+		- Android MM made more robust to avoid rare crashes.
+
+==============================================================================
+
+July 21, 2016		AVS open source release
+
+==============================================================================
