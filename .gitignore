@@ -21,4 +21,23 @@ build/
 android/libs/
 android/obj/
 
+contrib/re/build-android-armv7
+contrib/re/build-android-i386
+contrib/re/build-android-arm64
+contrib/re/build-android-x86_64
+
+contrib/re/build-ios-armv7
+contrib/re/build-ios-i386
+contrib/re/build-ios-arm64
+contrib/re/build-ios-x86_64
+
+contrib/re/build-linux-armv7
+contrib/re/build-linux-i386
+contrib/re/build-linux-arm64
+contrib/re/build-linux-x86_64
+
+contrib/re/build-osx-armv7
+contrib/re/build-osx-i386
+contrib/re/build-osx-arm64
+contrib/re/build-osx-x86_64
 
