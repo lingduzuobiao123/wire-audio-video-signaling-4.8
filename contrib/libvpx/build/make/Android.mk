@@ -201,7 +201,7 @@ endif
 $$(rtcd_dep_template_SRCS): vpx_scale_rtcd.h
 $$(rtcd_dep_template_SRCS): vpx_dsp_rtcd.h
 
-rtcd_dep_template_CONFIG_ASM_ABIS := x86 x86_64 armeabi-v7a
+rtcd_dep_template_CONFIG_ASM_ABIS := x86 x86_64 armeabi-v7a arm64-v8a
 ifneq ($$(findstring $(TARGET_ARCH_ABI),$$(rtcd_dep_template_CONFIG_ASM_ABIS)),)
 $$(rtcd_dep_template_SRCS): vpx_config.asm
 endif

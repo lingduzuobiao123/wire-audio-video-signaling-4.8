@@ -100,6 +100,7 @@ CONTRIB_OPENSSL_OPTIONS := \
 	no-async \
 
 CONTRIB_OPENSSL_COMPILER_android_armv7 := android
+CONTRIB_OPENSSL_COMPILER_android_arm64 := android
 CONTRIB_OPENSSL_COMPILER_android_i386  := android-x86
 CONTRIB_OPENSSL_COMPILER_ios_armv7     := cc
 CONTRIB_OPENSSL_COMPILER_ios_armv7s    := cc
@@ -456,6 +457,10 @@ CONTRIB_LIBVPX_OPTIONS_android-armv7 := \
         --disable-realtime-only \
 	--target=armv7-android-gcc \
 	--sdk-path=$(ANDROID_NDK_ROOT)
+CONTRIB_LIBVPX_OPTIONS_android-arm64 := \
+        --disable-realtime-only \
+	--target=arm64-android-gcc \
+	--sdk-path=$(ANDROID_NDK_ROOT)
 CONTRIB_LIBVPX_OPTIONS_android-i386 := \
         --disable-realtime-only \
 	--target=x86-android-gcc \
@@ -470,6 +475,10 @@ CONTRIB_LIBVPX_OPTIONS_linux-x86_64 := --target=x86_64-linux-gcc
 CONTRIB_LIBVPX_OPTIONS_osx-x86_64 := --target=x86_64-darwin13-gcc
 CONTRIB_LIBVPX_EXTRA_android-armv7 := \
 	CFLAGS="-DANDROID -mfloat-abi=softfp -mfpu=neon"
+CONTRIB_LIBVPX_EXTRA_android-arm64 := \
+	CC="$(GCC)" CXX="$(GCXX)" RANLIB="$(RANLIB)" \
+	ASFLAGS="-D__ANDROID__" \
+	LDFLAGS="-L$(TOOLCHAIN_PATH)/libc++"
 CONTRIB_LIBVPX_EXTRA_android-i386 := \
 	CC="$(GCC)" CXX="$(GCXX)" RANLIB="$(RANLIB)" \
 	ASFLAGS="-D__ANDROID__" \

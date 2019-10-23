@@ -52,7 +52,7 @@ ifeq ($(DIST_ARCH),)
 	DIST_ARCH := $(ALL_AVS_ARCH)
 endif
 
-DIST_ARCH_android := $(filter armv7 i386 osx,$(DIST_ARCH))
+DIST_ARCH_android := $(filter armv7 arm64 i386 osx,$(DIST_ARCH))
 DIST_ARCH_ios := $(filter armv7 arm64 x86_64,$(DIST_ARCH))
 
 DIST_FMWK_VERSION := A
@@ -142,6 +142,21 @@ ifneq ($(filter armv7,$(DIST_ARCH)),)
 	@cp android/libs/armeabi-v7a/libavs.so \
 		$(BUILD_DIST_AND)/aar/jni/armeabi-v7a/libavs.so
 endif
+ifneq ($(filter arm64,$(DIST_ARCH)),)
+	@mkdir -p $(BUILD_DIST_AND)/aar/jni/arm64-v8a
+	@$(MAKE) toolchain AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) contrib AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) $(JOBS) mediaengine AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) $(JOBS) avs AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) android_shared AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) tools test AVS_OS=android AVS_ARCH=arm64
+	@echo TOOLCHAIN=$(TOOLCHAIN_PATH)
+	@rm -rf android/obj
+	@rm -rf android/libs
+	@$(TOOLCHAIN_BASE_PATH)/android-arm64/ndk/ndk-build -C android
+	@cp android/libs/arm64-v8a/libavs.so \
+		$(BUILD_DIST_AND)/aar/jni/arm64-v8a/libavs.so
+endif
 ifneq ($(filter i386,$(DIST_ARCH)),)
 	@mkdir -p $(BUILD_DIST_AND)/aar/jni/x86
 	@$(MAKE) toolchain AVS_OS=android AVS_ARCH=i386 && \
@@ -184,6 +199,17 @@ ifneq ($(filter armv7,$(DIST_ARCH)),)
 	@mkdir -p $(BUILD_DIST_AND)/zip/libs/armeabi-v7a
 	@cp $(BUILD_BASE)/android-armv7/lib/libavs.so \
 		$(BUILD_DIST_AND)/zip/libs/armeabi-v7a
+endif
+ifneq ($(filter arm64,$(DIST_ARCH)),)
+	@$(MAKE) toolchain AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) contrib AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) $(JOBS) mediaengine AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) $(JOBS) avs AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) android_shared AVS_OS=android AVS_ARCH=arm64 && \
+	$(MAKE) tools test AVS_OS=android AVS_ARCH=arm64
+	@mkdir -p $(BUILD_DIST_AND)/zip/libs/arm64-v8a
+	@cp $(BUILD_BASE)/android-arm64/lib/libavs.so \
+		$(BUILD_DIST_AND)/zip/libs/arm64-v8a
 endif
 ifneq ($(filter i386,$(DIST_ARCH)),)
 	@$(MAKE) toolchain AVS_OS=android AVS_ARCH=i386 && \

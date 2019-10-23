@@ -2,6 +2,7 @@
 EXTRA_DIST = \
 	android-build.sh \
 	android-arm.sh \
+	android-arm64.sh \
 	android-armv7-a.sh \
 	android-armv8-a.sh \
 	android-mips32.sh \
