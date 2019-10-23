@@ -41,3 +41,6 @@ contrib/re/build-osx-i386
 contrib/re/build-osx-arm64
 contrib/re/build-osx-x86_64
 
+contrib/re/libre.*
+arm-linux-androideabi.*
+ztest
