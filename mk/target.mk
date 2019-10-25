@@ -416,8 +416,8 @@ SH_LIBS += \
 	$(TOOLCHAIN_PATH)/libc++/libc++_static.a
 
 else ifeq ($(AVS_ARCH),arm64)
-#CPPFLAGS += \
-#	-mfpu=neon
+CPPFLAGS += \
+	-march=armv8-a -mfpu=neon -fno-tree-vectorize
 else ifeq ($(AVS_ARCH),i386)
 
 else ifeq ($(AVS_ARCH),x86_64)

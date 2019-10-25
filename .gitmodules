@@ -36,4 +36,5 @@
 	url = https://github.com/jedisct1/libsodium.git
 [submodule "contrib/libvpx"]
 	path = contrib/libvpx
-	url = git@github.com:wireapp/libvpx.git
+	url = https://github.com/wireapp/libvpx.git
+# libvpx 是根据Googleplay 修改得到 原地址：https://github.com/webmproject/libvpx Google地址：https://chromium.googlesource.com/webm/libvpx 
