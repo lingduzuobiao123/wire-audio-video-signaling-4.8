@@ -25,7 +25,7 @@
 #include "avs_ztime.h"
 
 
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) && !defined(__LP64__)
 #include <time64.h>
 
 
@@ -37,12 +37,12 @@ time_t timegm(struct tm* const t);
 time_t timegm(struct tm* const t)
 {
 	/* time_t is signed on Android. */
-	// static const time_t kTimeMax = ~(1L << (sizeof(time_t) * 8 - 1));
-	// static const time_t kTimeMin = (1L << (sizeof(time_t) * 8 - 1));
-	// time64_t result = timegm64(t);
-	// if (result < kTimeMin || result > kTimeMax)
-	// 	return -1;
-	return -1;
+	static const time_t kTimeMax = ~(1L << (sizeof(time_t) * 8 - 1));
+	static const time_t kTimeMin = (1L << (sizeof(time_t) * 8 - 1));
+	time64_t result = timegm64(t);
+	if (result < kTimeMin || result > kTimeMax)
+		return -1;
+	return result;
 }
 #endif
 
