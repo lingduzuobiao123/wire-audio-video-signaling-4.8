@@ -376,15 +376,26 @@ CFLAGS   += \
 CXXFLAGS += -nostdlib -fPIC
 
 ifneq ($(BLA),)
+$(info BLABLABLABLABLABLA 1 BLA:$(BLA), AVS_ARCH:$(AVS_ARCH),TARGET_ARCH_ABI:$(TARGET_ARCH_ABI))
 LFLAGS   += \
 	 -nostdlib -fPIC -Wl,-soname,libtwolib-second.so \
 	 -Wl,--whole-archive -Wl,--no-undefined -Wl,--gc-sections
 else
+ifeq ($(AVS_ARCH),arm64)
+$(info BLABLABLABLABLABLA 2 BLA:$(BLA), AVS_ARCH:$(AVS_ARCH),TARGET_ARCH_ABI:$(TARGET_ARCH_ABI))
+LFLAGS	+= \
+	-fPIC \
+	-L$(SYSROOT)/lib \
+	-no-canonical-prefixes -Wl,--no-undefined \
+	-Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -mthumb
+else
+$(info BLABLABLABLABLABLA 3 BLA:$(BLA), AVS_ARCH:$(AVS_ARCH),TARGET_ARCH_ABI:$(TARGET_ARCH_ABI))
 LFLAGS	+= \
 	-fPIC \
 	-L$(SYSROOT)/lib \
 	-no-canonical-prefixes -Wl,--fix-cortex-a8  -Wl,--no-undefined \
 	-Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -mthumb
+endif
 endif
 
 SH_LFLAGS += \
@@ -417,7 +428,12 @@ SH_LIBS += \
 
 else ifeq ($(AVS_ARCH),arm64)
 CPPFLAGS += \
-	-march=armv8-a -mfpu=neon -fno-tree-vectorize
+	-march=armv8-a -ftree-vectorize
+SH_LIBS += \
+	$(TOOLCHAIN_PATH)/libc++/libc++_static.a
+#CPPFLAGS += \
+	-mfpu=neon -ftree-vectorize -mcpu=cortex-a53
+
 else ifeq ($(AVS_ARCH),i386)
 
 else ifeq ($(AVS_ARCH),x86_64)

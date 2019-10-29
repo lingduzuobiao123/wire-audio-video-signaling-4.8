@@ -981,43 +981,86 @@ EOF
         android*)
           if [ -n "${sdk_path}" ]; then
             SDK_PATH=${sdk_path}
-            COMPILER_LOCATION=`find "${SDK_PATH}" \
-              -name "arm-linux-androideabi-gcc*" -print -quit`
-            TOOLCHAIN_PATH=${COMPILER_LOCATION%/*}/arm-linux-androideabi-
-            CC=${TOOLCHAIN_PATH}gcc
-            CXX=${TOOLCHAIN_PATH}g++
-            AR=${TOOLCHAIN_PATH}ar
-            LD=${TOOLCHAIN_PATH}gcc
-            AS=${TOOLCHAIN_PATH}as
-            STRIP=${TOOLCHAIN_PATH}strip
-            NM=${TOOLCHAIN_PATH}nm
+            if [ ${tgt_isa} = "arm64" ] || [ ${tgt_isa} = "armv8" ]; then
+              echo "tgt_isa 22 start ($tgt_isa) SDK_PATH ($SDK_PATH)"
+              COMPILER_LOCATION=`find "${SDK_PATH}" \
+              -name "aarch64-linux-android-gcc*" -print -quit`
+              echo "tgt_isa 22 mid ($tgt_isa) COMPILER_LOCATION ($COMPILER_LOCATION)"
+              TOOLCHAIN_PATH=${COMPILER_LOCATION%/*}/aarch64-linux-android-
+              CC=${TOOLCHAIN_PATH}gcc
+              CXX=${TOOLCHAIN_PATH}g++
+              AR=${TOOLCHAIN_PATH}ar
+              LD=${TOOLCHAIN_PATH}gcc
+              AS=${TOOLCHAIN_PATH}as
+              STRIP=${TOOLCHAIN_PATH}strip
+              NM=${TOOLCHAIN_PATH}nm
+              echo "tgt_isa 22 end ($tgt_isa) TOOLCHAIN_PATH ($TOOLCHAIN_PATH)"
 
-            if [ -z "${alt_libc}" ]; then
-              alt_libc=`find "${SDK_PATH}" -name arch-arm -print | \
+              if [ -z "${alt_libc}" ]; then
+              alt_libc=`find "${SDK_PATH}" -name arch-arm64 -print | \
                 awk '{n = split($0,a,"/"); \
                 split(a[n-1],b,"-"); \
                 print $0 " " b[2]}' | \
                 sort -g -k 2 | \
                 awk '{ print $1 }' | tail -1`
-            fi
+                echo "alt_libc 33 ($alt_libc)"
+              fi
 
-            if [ -d "${alt_libc}" ]; then
-              add_cflags "--sysroot=${alt_libc}"
-              add_ldflags "--sysroot=${alt_libc}"
+              if [ -d "${alt_libc}" ]; then
+                add_cflags "--sysroot=${alt_libc}"
+                add_ldflags "--sysroot=${alt_libc}"
+                echo "alt_libc 44 ($alt_libc)"
+              fi
+
+            else
+              echo "tgt_isa 11 ($tgt_isa) SDK_PATH ($SDK_PATH)"
+              COMPILER_LOCATION=`find "${SDK_PATH}" \
+              -name "arm-linux-androideabi-gcc*" -print -quit`
+              TOOLCHAIN_PATH=${COMPILER_LOCATION%/*}/arm-linux-androideabi-
+              CC=${TOOLCHAIN_PATH}gcc
+              CXX=${TOOLCHAIN_PATH}g++
+              AR=${TOOLCHAIN_PATH}ar
+              LD=${TOOLCHAIN_PATH}gcc
+              AS=${TOOLCHAIN_PATH}as
+              STRIP=${TOOLCHAIN_PATH}strip
+              NM=${TOOLCHAIN_PATH}nm
+
+              if [ -z "${alt_libc}" ]; then
+                alt_libc=`find "${SDK_PATH}" -name arch-arm -print | \
+                  awk '{n = split($0,a,"/"); \
+                  split(a[n-1],b,"-"); \
+                  print $0 " " b[2]}' | \
+                  sort -g -k 2 | \
+                  awk '{ print $1 }' | tail -1`
+                echo "alt_libc 33 ($alt_libc)"
+              fi
+
+              if [ -d "${alt_libc}" ]; then
+                add_cflags "--sysroot=${alt_libc}"
+                add_ldflags "--sysroot=${alt_libc}"
+                echo "alt_libc 44 ($alt_libc)"
+              fi
+
             fi
 
             # linker flag that routes around a CPU bug in some
             # Cortex-A8 implementations (NDK Dev Guide)
-            add_ldflags "-Wl,--fix-cortex-a8"
+            if [ ${tgt_isa} = "armv7" ]; then
+              add_ldflags "-Wl,--fix-cortex-a8"
+              echo "tgt_isa 55 ($tgt_isa)"
+            fi
 
             enable_feature pic
             soft_enable realtime_only
             if [ ${tgt_isa} = "armv7" ]; then
               soft_enable runtime_cpu_detect
+              echo "tgt_isa 66 ($tgt_isa)"
             fi
             if enabled runtime_cpu_detect; then
               add_cflags "-I${SDK_PATH}/sources/android/cpufeatures"
+              echo "tgt_isa 77 ($tgt_isa)"
             fi
+            echo "tgt_isa 88 ($tgt_isa)"
           else
             echo "Assuming standalone build with NDK toolchain."
             echo "See build/make/Android.mk for details."
@@ -1150,6 +1193,9 @@ EOF
       ;;
     x86*)
       case  ${tgt_os} in
+        android)
+          soft_enable realtime_only
+          ;;
         win*)
           enabled gcc && add_cflags -fno-common
           ;;
