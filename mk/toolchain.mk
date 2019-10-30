@@ -2,7 +2,7 @@
 TOOLCHAIN_GCC_VERSION  := 4.9
 TOOLCHAIN_LLVM_VERSION := 3.4
 #TOOLCHAIN_PLATFORM     := android-21
-TOOLCHAIN_API          21
+TOOLCHAIN_API          := 21
 TOOLCHAIN_STL          := libc++
 
 TOOLCHAIN_ARCH_armv7   := arm
