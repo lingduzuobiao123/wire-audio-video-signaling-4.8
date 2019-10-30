@@ -14,5 +14,5 @@ $(info application.mk 1 android-arm64 no exist DEPLOY_BUILD_ANDROID_ARM64:$(DEPL
 APP_ABI := armeabi-v7a
 endif
 
-APP_PLATFORM := android-16
+APP_PLATFORM := android-21
 APP_PIE := false

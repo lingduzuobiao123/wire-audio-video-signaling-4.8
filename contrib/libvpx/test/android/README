@@ -7,7 +7,7 @@ Android.mk will build vpx unittests on android.
 
 2) From the parent directory, invoke ndk-build:
 NDK_PROJECT_PATH=. ndk-build APP_BUILD_SCRIPT=./libvpx/test/android/Android.mk \
-  APP_ABI=armeabi-v7a APP_PLATFORM=android-18 APP_OPTIM=release \
+  APP_ABI=armeabi-v7a APP_PLATFORM=android-21 APP_OPTIM=release \
   APP_STL=gnustl_static
 
 Note: Both adb and ndk-build are available prebuilt at:
