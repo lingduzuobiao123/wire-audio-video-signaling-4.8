@@ -1,3 +1,12 @@
+
+# 维护和修改 Wire - Audio, Video, and Signaling (AVS) 4.8 
+
+由于4.8以后的版本Wire不进行开源了，切不支持android arm64-v8a（google play审核需要） 只能自己根据项目情况进行改版
+修改Android的版本 从android-16升级到android-21 使其能编译arm64-v8a
+经过修改JDK已经支持1.8
+由于源代码已经狠古老NDK还必须是版本:[android-ndk-r14b](https://developer.android.google.cn/ndk/downloads/older_releases.html?hl=zh-cn)
+
+
 # Wire - Audio, Video, and Signaling (AVS)
 
 This repository is part of the source code of Wire. You can find more information at [wire.com](https://wire.com) or by contacting opensource@wire.com.
@@ -41,7 +50,7 @@ $ multirust default nightly
 
 For **Android**, you need both the
 [Android SDK](https://developer.android.com/sdk/index.html) as well as the
-[Android NDK](https://developer.android.com/tools/sdk/ndk/index.html).
+[Android NDK](https://developer.android.com/tools/sdk/ndk/index.html). NDK必须是版本:[android-ndk-r14b](https://developer.android.google.cn/ndk/downloads/older_releases.html?hl=zh-cn)
 Just get the latest versions and install them somewhere cozy. You need to
 export two environment variables ``ANDROID_SDK_ROOT`` and
 ``ANDROID_NDK_ROOT`` pointing to the respective location. Unless you do a
@@ -89,10 +98,10 @@ system. Good luck!
 The first time you need to fetch the submodules by doing:
 
 ```
-$ ./prepare.sh
+$ ./prepare.sh    注意：这个不需要了已经帮你准备好了
 ```
 
-Patches for webrtc are under mediaengine/webrtc_patches. Run apply_patches.sh to apply them
+Patches for webrtc are under mediaengine/webrtc_patches. Run apply_patches.sh to apply them 注意：这个也不需要了已经帮你准备好了
 
 If you simply say ``make``, a selection of tools is being built for your
 host machine.
@@ -211,3 +220,24 @@ When reporting bugs against AVS please include the following:
 - Name/OS of device
 - Adb logcat for Android
 
+
+# 如果出现一下错误：
+No rule to make target `crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S', needed by `crypto_stream/salsa20/xmm6/libsodium_la-salsa20_xmm6-asm.lo'.  Stop.
+
+
+No rule to make target `crypto_scalarmult/curve25519/sandy2x/consts.S', needed by `crypto_stream/salsa20/xmm6/libsodium_la-salsa20_xmm6-asm.lo'.  Stop.
+
+
+No rule to make target `crypto_scalarmult/curve25519/sandy2x/sandy2x.S', needed by `crypto_scalarmult/curve25519/sandy2x/libsodium_la-sandy2x.lo'.  Stop.
+
+make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/fe51_mul.S', needed by `all-am'.  Stop.
+
+make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S', needed by `all-am'.  Stop.
+
+make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/fe51_pack.S', needed by `all-am'.  Stop.
+
+make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/ladder.S', needed by `all-am'.  Stop.
+
+make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/ladder_base.S', needed by `all-am'.  Stop.
+
+把 crypto_stream.zip和crypto_scalarmult.zip 解压替换：contrib/sodium/src/libsodium/下的crypto_stream和crypto_scalarmult文件
