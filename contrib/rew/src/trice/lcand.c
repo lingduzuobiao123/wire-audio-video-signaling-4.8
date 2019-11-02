@@ -196,6 +196,37 @@ static void dummy_udp_recv(const struct sa *src, struct mbuf *mb, void *arg)
 		     &lcand->attr.addr);
 }
 
+static int udp_listen_range(struct udp_sock **usp, const struct sa *ip,
+			    uint16_t min_port, uint16_t max_port,
+			    udp_recv_h *rh, void *arg)
+{
+	struct sa laddr;
+	int tries = 64;
+	int err = 0;
+
+	sa_cpy(&laddr, ip);
+
+	/* try hard */
+	while (tries--) {
+		struct udp_sock *us;
+		uint16_t port;
+
+		port = (min_port + (rand_u16() % (max_port - min_port)));
+
+		sa_set_port(&laddr, port);
+		err = udp_listen(&us, &laddr, rh, arg);
+		if (err)
+			continue;
+
+		/* OK */
+		if (usp)
+			*usp = us;
+		break;
+	}
+
+	return err;
+}
+
 
 /*
  * you can call this at any time
@@ -283,8 +314,20 @@ int trice_lcand_add(struct ice_lcand **lcandp, struct trice *icem,
 					    sa_port(&laddr));
 			}
 			else {
-				err = udp_listen(&lcand->us, addr,
-						 dummy_udp_recv, lcand);
+				if (icem->ports.min && icem->ports.max) {
+					err = udp_listen_range(
+						      &lcand->us,
+						      addr,
+						      icem->ports.min,
+						      icem->ports.max,
+						      dummy_udp_recv,
+						      lcand);
+				}
+				else {
+					err = udp_listen(&lcand->us, addr,
+							 dummy_udp_recv,
+							 lcand);
+				}
 				if (err)
 					goto out;
 

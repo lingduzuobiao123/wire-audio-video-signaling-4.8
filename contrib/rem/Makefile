@@ -6,11 +6,11 @@
 
 # Master version number
 VER_MAJOR := 0
-VER_MINOR := 5
+VER_MINOR := 6
 VER_PATCH := 0
 
 PROJECT   := rem
-VERSION   := 0.5.0
+VERSION   := $(VER_MAJOR).$(VER_MINOR).$(VER_PATCH)
 OPT_SPEED := 1
 
 LIBRE_MK  := $(shell [ -f ../re/mk/re.mk ] && \
@@ -27,9 +27,9 @@ endif
 include $(LIBRE_MK)
 
 # List of modules
-MODULES += fir
+MODULES += fir goertzel
 MODULES += g711
-MODULES += aubuf aufile auresamp autone
+MODULES += aubuf aufile auresamp autone dtmf
 MODULES += au auconv
 
 ifneq ($(HAVE_LIBPTHREAD),)
@@ -37,6 +37,7 @@ MODULES += aumix vidmix
 endif
 
 MODULES += vid vidconv
+MODULES += avc
 
 LIBS    += -lm
 

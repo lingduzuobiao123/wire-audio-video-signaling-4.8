@@ -27,7 +27,8 @@ static const struct trice_conf conf_default = {
 	false,
 	false,
 	false,
-	true
+	true,
+	false
 };
 
 
@@ -530,6 +531,21 @@ int trice_reqbuf_append(struct trice *icem, struct ice_lcand *lcand,
 	reqbuf->presz = presz;
 
 	list_append(&icem->reqbufl, &reqbuf->le, reqbuf);
+
+	return 0;
+}
+
+int trice_set_port_range(struct trice *trice,
+			 uint16_t min_port, uint16_t max_port)
+{
+	if (!trice)
+		return EINVAL;
+
+	if (max_port < min_port)
+		return ERANGE;
+
+	trice->ports.min = min_port;
+	trice->ports.max = max_port;
 
 	return 0;
 }

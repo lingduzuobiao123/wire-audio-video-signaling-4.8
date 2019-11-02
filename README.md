@@ -241,3 +241,28 @@ make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/ladder
 make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/ladder_base.S', needed by `all-am'.  Stop.
 
 把 crypto_stream.zip和crypto_scalarmult.zip 解压替换：contrib/sodium/src/libsodium/下的crypto_stream和crypto_scalarmult文件
+
+#更新contrib/中第三方库的版本
+* cryptobox-c @ 9a9df46             9a9df46   2017/9/1
+* generic-message-proto @ ea08048    ea08048   2017/9/25
+* googletest @ ec44c6c               ec44c6c  2016/7/15
+* libvpx @ dc2656f                  f80be22a1         2018年1月25日 GMT+8 上午6:25:44 vp8/common/postproc.c -- 69行-  const MODE_INFO *mode_info_context = mi;注释用上一行了
+* openssl @ b2758a2                 b2758a2   2017/11/2 
+* opus @ aa32042                   defbc370         2017年6月27日 GMT+8 上午2:04:09
+* rem @ 81834ad                  8d572e6         2018年11月23日 GMT+8 下午8:59:48
+* rew @ 9ce0a92                  24c91fd         2018年3月27日 GMT+8 下午7:26:59
+* sodium @ 7d5d920                  675149b9         2017年12月13日 GMT+8 下午5:24:13
+* usrsctp @ 0e07626                  0e07626         2017年11月25日 GMT+8 上午3:45:25
+
+注意：更新之后执行 make 有下面错误：（但是执行 make dist_android 正常）
+dongxulin:wire-audio-video-signaling-4.8 mac8$ make
+  LD      ztest
+Undefined symbols for architecture x86_64:
+  "_crypto_stream_aes128ctr", referenced from:
+      sodiumoxide::crypto::stream::aes128ctr::stream::heb5936bfc6e1503f in libcryptobox.a(sodiumoxide-3025ede55992078f.sodiumoxide.7ny67lrf-cgu.2.rcgu.o)
+  "_crypto_stream_aes128ctr_xor", referenced from:
+      sodiumoxide::crypto::stream::aes128ctr::stream_xor::ha6931bba5605dd72 in libcryptobox.a(sodiumoxide-3025ede55992078f.sodiumoxide.7ny67lrf-cgu.2.rcgu.o)
+      sodiumoxide::crypto::stream::aes128ctr::stream_xor_inplace::h86df1ad51b40afd7 in libcryptobox.a(sodiumoxide-3025ede55992078f.sodiumoxide.7ny67lrf-cgu.2.rcgu.o)
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [ztest] Error 1

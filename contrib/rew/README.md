@@ -30,3 +30,9 @@ The following modules are implemented:
 - https://tools.ietf.org/html/rfc6887
 - https://tools.ietf.org/html/rfc7220
 
+
+# Testing
+
+The retest program has a branch for testing librew:
+
+https://github.com/creytiv/retest/tree/rew

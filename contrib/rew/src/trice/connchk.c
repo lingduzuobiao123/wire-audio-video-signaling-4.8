@@ -256,7 +256,7 @@ int trice_conncheck_stun_request(struct ice_checklist *ic,
 {
 	struct ice_lcand *lcand = cp->lcand;
 	struct trice *icem = ic->icem;
-	char username_buf[64];
+	char username_buf[256];
 	uint32_t prio_prflx;
 	uint16_t ctrl_attr;
 	bool use_cand = false;
@@ -288,8 +288,12 @@ int trice_conncheck_stun_request(struct ice_checklist *ic,
 	else if (lcand->attr.proto == IPPROTO_TCP)
 		presz = 2;
 
-	(void)re_snprintf(username_buf, sizeof(username_buf),
-			  "%s:%s", icem->rufrag, icem->lufrag);
+	if (re_snprintf(username_buf, sizeof(username_buf),
+			"%s:%s", icem->rufrag, icem->lufrag) < 0) {
+		DEBUG_WARNING("conncheck: username buffer too small\n");
+		err = ENOMEM;
+		goto out;
+	}
 
 	/* PRIORITY and USE-CANDIDATE */
 	prio_prflx = ice_cand_calc_prio(ICE_CAND_TYPE_PRFLX, 0,

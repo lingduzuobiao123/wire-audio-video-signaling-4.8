@@ -7,11 +7,15 @@
 
 /** ICE Configuration */
 struct trice_conf {
-	enum ice_nomination nom;/**< Nomination algorithm                  */
-	bool debug;             /**< Enable ICE debugging                  */
-	bool trace;             /**< Enable tracing of Connectivity checks */
-	bool ansi;              /**< Enable ANSI colors for debug output   */
-	bool enable_prflx;      /**< Enable Peer-Reflexive candidates      */
+	enum ice_nomination nom;       /**< Nomination algorithm             */
+	bool debug;                    /**< Enable ICE debugging             */
+	bool trace;                    /**< Enable tracing of Connectivity
+					    checks                           */
+	bool ansi;                     /**< Enable ANSI colors for debug
+					   output                            */
+	bool enable_prflx;             /**< Enable Peer-Reflexive candidates */
+	bool optimize_loopback_pairing;/**< Reduce candidate pairs when
+					    using loopback addresses         */
 };
 
 struct trice;
@@ -157,3 +161,7 @@ bool trice_checklist_iscompleted(const struct trice *icem);
 /* ICE Conncheck */
 int trice_conncheck_send(struct trice *icem, struct ice_candpair *pair,
 			bool use_cand);
+
+/* Port range */
+int trice_set_port_range(struct trice *trice,
+			 uint16_t min_port, uint16_t max_port);

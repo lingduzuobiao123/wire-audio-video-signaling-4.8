@@ -47,7 +47,7 @@
     ARGON2_MIN(UINT32_C(0xFFFFFFFF), UINT64_C(1) << ARGON2_MAX_MEMORY_BITS)
 
 /* Minimum and maximum number of passes */
-#define ARGON2_MIN_TIME UINT32_C(3)
+#define ARGON2_MIN_TIME UINT32_C(1)
 #define ARGON2_MAX_TIME UINT32_C(0xFFFFFFFF)
 
 /* Minimum and maximum password length in bytes */
@@ -69,7 +69,7 @@
 #define ARGON2_FLAG_CLEAR_PASSWORD (UINT32_C(1) << 0)
 #define ARGON2_FLAG_CLEAR_SECRET (UINT32_C(1) << 1)
 #define ARGON2_FLAG_CLEAR_MEMORY (UINT32_C(1) << 2)
-#define ARGON2_DEFAULT_FLAGS (ARGON2_FLAG_CLEAR_MEMORY)
+#define ARGON2_DEFAULT_FLAGS (UINT32_C(0))
 
 /* Error codes */
 typedef enum Argon2_ErrorCodes {

@@ -1,3 +1,53 @@
+2018-11-24 Alfred E. Heggestad <alfred.heggestad@gmail.com>
+
+	* Version 0.6.0
+
+	* Project URL: https://github.com/creytiv/rem
+
+	* avc: new module for Advanced Video Coding (AVC)
+
+	* flv: new module for Flash Video File format (FLV)
+
+
+2018-04-20 Alfred E. Heggestad <alfred.heggestad@gmail.com>
+
+	* Version 0.5.3
+
+	* Project URL: https://github.com/creytiv/rem
+
+	* auresamp: avoid FIR filtering if ouput sample rate equals input (#15)
+
+	* build: Update Windows project (#18) (thanks Encamy)
+
+	* vid: vidframe_draw_point: correct endian for RGB32 (#16)
+
+
+2017-09-23 Alfred E. Heggestad <alfred.heggestad@gmail.com>
+
+	* Version 0.5.2
+
+	* Project URL: https://github.com/creytiv/rem
+
+	* build: Updated MSVS projects to vs2015 (thanks Mikhail Barg)
+
+	* goertzel: new module for Goertzel Algorithm
+
+	* dtmf: new module for DTMF decoder
+
+
+2017-04-08 Alfred E. Heggestad <alfred.heggestad@gmail.com>
+
+	* Version 0.5.1
+
+	* Project URL: https://github.com/creytiv/rem
+
+	* vid: add YUV444P to vidframe functions
+	       add NV12/21 to vidframe_copy
+
+	* vidconv: add RGB32 to/from YUV444P
+		   add NV12/21 to RGB32 (thanks Harald Gutmann)
+
+
 2016-12-02 Alfred E. Heggestad <alfred.heggestad@gmail.com>
 
 	* Version 0.5.0

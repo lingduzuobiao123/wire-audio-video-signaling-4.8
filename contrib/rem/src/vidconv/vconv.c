@@ -180,6 +180,18 @@ static inline void yuv2rgb555(uint8_t *rgb, uint8_t y,
 }
 
 
+static inline void _yuv2rgb(uint8_t *rgb, uint8_t y, uint8_t u, uint8_t v)
+{
+	int ruv, guv, buv;
+
+	ruv = CRV[v];
+	guv = CGV[v] + CGU[u];
+	buv = CBU[u];
+
+	yuv2rgb(rgb, y, ruv, guv, buv);
+}
+
+
 typedef void (line_h)(unsigned xoffs, unsigned width, double rw,
 		      unsigned yd, unsigned ys, unsigned ys2,
 		      uint8_t *dd0, uint8_t *dd1, uint8_t *dd2,
@@ -338,6 +350,46 @@ static void rgb32_to_yuv420p(unsigned xoffs, unsigned width, double rw,
 
 		dd1[id] = rgb2u(x0 >> 16, x0 >> 8, x0);
 		dd2[id] = rgb2v(x0 >> 16, x0 >> 8, x0);
+	}
+}
+
+
+static void rgb32_to_yuv444p(unsigned xoffs, unsigned width, double rw,
+			     unsigned yd, unsigned ys, unsigned ys2,
+			     uint8_t *dd0, uint8_t *dd1, uint8_t *dd2,
+			     unsigned lsd,
+			     const uint8_t *ds0, const uint8_t *ds1,
+			     const uint8_t *ds2, unsigned lss
+			     )
+{
+	unsigned x, xd, xs;
+	unsigned id;
+
+	(void)ds1;
+	(void)ds2;
+
+	for (x=0; x<width; x++) {
+
+		uint32_t x0;
+		uint32_t x1;
+
+		xd = x + xoffs;
+
+		xs = 4 * ((unsigned)(x * rw));
+
+		id = xd + yd*lsd;
+
+		x0 = *(uint32_t *)(void *)&ds0[xs + ys *lss];
+		x1 = *(uint32_t *)(void *)&ds0[xs + ys2*lss];
+
+		dd0[id]       = rgb2y(x0 >> 16, x0 >> 8, x0);
+		dd0[id + lsd] = rgb2y(x1 >> 16, x1 >> 8, x1);
+
+		dd1[id]       = rgb2u(x0 >> 16, x0 >> 8, x0);
+		dd1[id + lsd] = rgb2u(x1 >> 16, x1 >> 8, x1);
+
+		dd2[id]       = rgb2v(x0 >> 16, x0 >> 8, x0);
+		dd2[id + lsd] = rgb2v(x1 >> 16, x1 >> 8, x1);
 	}
 }
 
@@ -572,8 +624,123 @@ static void nv21_to_yuv420p(unsigned xoffs, unsigned width, double rw,
 	}
 }
 
-#define MAX_SRC 9
-#define MAX_DST 8
+
+static void yuv444p_to_rgb32(unsigned xoffs, unsigned width, double rw,
+			     unsigned yd, unsigned ys, unsigned ys2,
+			     uint8_t *dd0, uint8_t *dd1, uint8_t *dd2,
+			     unsigned lsd,
+			     const uint8_t *ds0, const uint8_t *ds1,
+			     const uint8_t *ds2, unsigned lss)
+{
+	unsigned x, xd, xs;
+	unsigned id;
+	unsigned is1, is2;
+
+	(void)dd1;
+	(void)dd2;
+
+	for (x=0; x<width; x++) {
+
+		xd = (x + xoffs) * 4;
+
+		xs = (unsigned)(x * rw);
+
+		id = xd + yd*lsd;
+
+		is1 = xs + ys *lss;
+		is2 = xs + ys2*lss;
+
+		_yuv2rgb(&dd0[id],       ds0[is1], ds1[is1], ds2[is1]);
+		_yuv2rgb(&dd0[id + lsd], ds0[is2], ds1[is2], ds2[is2]);
+	}
+}
+
+
+static void nv12_to_rgb32(unsigned xoffs, unsigned width, double rw,
+                           unsigned yd, unsigned ys, unsigned ys2,
+                           uint8_t *dd0, uint8_t *dd1, uint8_t *dd2,
+                           unsigned lsd,
+                           const uint8_t *ds0, const uint8_t *ds1,
+                           const uint8_t *ds2, unsigned lss
+                           )
+{
+       unsigned x, xd, xs, xs2;
+       unsigned id, is;
+
+       (void)ds2;
+       (void)dd1;
+       (void)dd2;
+
+       for (x=0; x<width; x+=2) {
+               int ruv, guv, buv;
+               uint8_t u, v;
+
+               xd  = (x + xoffs) * 4;
+
+               xs  = (unsigned)(x * rw);
+               xs2 = (unsigned)((x+1) * rw);
+
+               id = (xd + yd*lsd);
+               is = xs/2 + ys*lss/4;
+
+               u = ds1[2*is];
+               v = ds1[2*is+1];
+               ruv = CRV[v];
+               guv = CGV[v] + CGU[u];
+               buv = CBU[u];
+
+               yuv2rgb(&dd0[id],         ds0[xs  + ys*lss],  ruv, guv, buv);
+               yuv2rgb(&dd0[id+4],       ds0[xs2 + ys*lss],  ruv, guv, buv);
+               yuv2rgb(&dd0[id   + lsd], ds0[xs  + ys2*lss], ruv, guv, buv);
+               yuv2rgb(&dd0[id+4 + lsd], ds0[xs2 + ys2*lss], ruv, guv, buv);
+       }
+}
+
+
+static void nv21_to_rgb32(unsigned xoffs, unsigned width, double rw,
+                           unsigned yd, unsigned ys, unsigned ys2,
+                           uint8_t *dd0, uint8_t *dd1, uint8_t *dd2,
+                           unsigned lsd,
+                           const uint8_t *ds0, const uint8_t *ds1,
+                           const uint8_t *ds2, unsigned lss
+                           )
+{
+       unsigned x, xd, xs, xs2;
+       unsigned id, is;
+
+       (void)ds2;
+       (void)dd1;
+       (void)dd2;
+
+       for (x=0; x<width; x+=2) {
+               int ruv, guv, buv;
+               uint8_t u, v;
+
+               xd  = (x + xoffs) * 4;
+
+               xs  = (unsigned)(x * rw);
+               xs2 = (unsigned)((x+1) * rw);
+
+               id = (xd + yd*lsd);
+               is = xs/2 + ys*lss/4;
+
+               v = ds1[2*is];
+               u = ds1[2*is+1];
+               ruv = CRV[v];
+               guv = CGV[v] + CGU[u];
+               buv = CBU[u];
+
+               yuv2rgb(&dd0[id],         ds0[xs  + ys*lss],  ruv, guv, buv);
+               yuv2rgb(&dd0[id+4],       ds0[xs2 + ys*lss],  ruv, guv, buv);
+               yuv2rgb(&dd0[id   + lsd], ds0[xs  + ys2*lss], ruv, guv, buv);
+               yuv2rgb(&dd0[id+4 + lsd], ds0[xs2 + ys2*lss], ruv, guv, buv);
+       }
+}
+
+
+#define MAX_SRC 10
+#define MAX_DST 10
+
 
 /**
  * Pixel conversion table:  [src][dst]
@@ -589,12 +756,16 @@ static line_h *conv_table[MAX_SRC][MAX_DST] = {
 	 yuv420p_to_rgb565, yuv420p_to_rgb555, yuv420p_to_nv12},
 	{yuyv422_to_yuv420p,  NULL,     NULL,     NULL, NULL, NULL, NULL},
 	{uyvy422_to_yuv420p,  NULL,     NULL,     NULL, NULL, NULL, NULL},
-	{rgb32_to_yuv420p,    NULL,     NULL,     NULL, NULL, NULL, NULL},
+	{rgb32_to_yuv420p,    NULL,     NULL,     NULL, NULL, NULL, NULL,
+	 NULL, NULL, rgb32_to_yuv444p},
 	{rgb32_to_yuv420p,    NULL,     NULL,     NULL, NULL, NULL, NULL},
 	{NULL,                NULL,     NULL,     NULL, NULL, NULL, NULL},
 	{NULL,                NULL,     NULL,     NULL, NULL, NULL, NULL},
-	{nv12_to_yuv420p,     NULL,     NULL,     NULL, NULL, NULL, NULL},
-	{nv21_to_yuv420p,     NULL,     NULL,     NULL, NULL, NULL, NULL},
+	{nv12_to_yuv420p,     NULL,     NULL,     nv12_to_rgb32,
+	 NULL, NULL, NULL},
+	{nv21_to_yuv420p,     NULL,     NULL,     nv21_to_rgb32,
+	 NULL, NULL, NULL},
+	{NULL,                NULL,     NULL,     yuv444p_to_rgb32}
 };
 
 

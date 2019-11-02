@@ -3,7 +3,7 @@ librem README
 
 
 librem is a Audio and video processing media library
-Copyright (C) 2010 - 2016 Creytiv.com
+Copyright (C) 2010 - 2018 Creytiv.com
 
 [![Build Status](https://travis-ci.org/creytiv/rem.svg?branch=master)](https://travis-ci.org/creytiv/rem)
 
@@ -17,6 +17,7 @@ Copyright (C) 2010 - 2016 Creytiv.com
 * Audio resampler
 * Audio tone generator
 * Audio codec (G.711)
+* DTMF decoder
 * Video mixer
 * Video pixel converter
 * FIR-filter
@@ -70,6 +71,7 @@ Audio Modules:
 * aumix     unstable      Audio mixer
 * auresamp  unstable      Audio resampler
 * autone    testing       Tone/DTMF generator
+* dtmf      unstable      DTMF decoder
 * g711      stable        G.711 audio codec
 
 
@@ -79,6 +81,7 @@ Video Modules:
 
   name:     status:       description:
 
+* avc       unstable      Advanced Video Coding (AVC)
 * vid       testing       Base video types
 * vidconv   testing       Colorspace conversion and scaling
 * vidmix    unstable      Video mixer
@@ -89,7 +92,9 @@ Video Modules:
 Generic modules:
 
 * dsp       testing       DSP routines
+* flv       unstable      Flash Video File Format
 * fir       unstable      FIR (Finite Impulse Response) filter
+* goertzel  unstable      Goertzel Algorithm
 ```
 
 
