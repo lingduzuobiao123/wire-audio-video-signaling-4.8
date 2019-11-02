@@ -66,6 +66,7 @@ void vp8_deblock(VP8_COMMON *cm, YV12_BUFFER_CONFIG *source,
   int ppl = (int)(level + .5);
 
   const MODE_INFO *mode_info_context = cm->show_frame_mi;
+  // const MODE_INFO *mode_info_context = mi;
   int mbr, mbc;
 
   /* The pixel thresholds are adjusted according to if or not the macroblock

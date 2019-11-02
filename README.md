@@ -246,7 +246,7 @@ make[4]: *** No rule to make target `crypto_scalarmult/curve25519/sandy2x/ladder
 * cryptobox-c @ 9a9df46             9a9df46   2017/9/1
 * generic-message-proto @ ea08048    ea08048   2017/9/25
 * googletest @ ec44c6c               ec44c6c  2016/7/15
-* libvpx @ dc2656f                  f80be22a1         2018年1月25日 GMT+8 上午6:25:44 vp8/common/postproc.c -- 69行-  const MODE_INFO *mode_info_context = mi;注释用上一行了
+* libvpx @ dc2656f                  f80be22a1         2018年1月25日 GMT+8 上午6:25:44  以前代码用的 libvpx/vp8/common/postproc.c -- 69行-  const MODE_INFO *mode_info_context = mi;注释用上一行了
 * openssl @ b2758a2                 b2758a2   2017/11/2 
 * opus @ aa32042                   defbc370         2017年6月27日 GMT+8 上午2:04:09
 * rem @ 81834ad                  8d572e6         2018年11月23日 GMT+8 下午8:59:48
