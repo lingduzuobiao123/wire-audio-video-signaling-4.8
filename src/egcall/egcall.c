@@ -183,7 +183,7 @@ static void update_conf_pos(struct egcall *egcall)
 	if (err) {
 		warning("egcall: msystem_update_conf_parts error (%m)\n", err);
 	}
-
+printf("3333www");
 	ICALL_CALL_CB(egcall->icall, group_changedh,
 		egcall->icall.arg);	
 }
@@ -1266,7 +1266,7 @@ int egcall_msg_recv(struct icall *icall,
 	struct egcall *egcall = (struct egcall*)icall;
 	struct ecall *ecall = NULL;
 	char userid_anon[ANON_ID_LEN];
-
+printf("4444www");
 	if (!egcall || !msg)
 		return EINVAL;
 

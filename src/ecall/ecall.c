@@ -702,6 +702,7 @@ static int _icall_msg_recv(struct icall *icall,
 			   const char *clientid_sender,
 			   struct econn_message *msg)
 {
+	printf("2222www");
 	return ecall_msg_recv((struct ecall*)icall, curr_time, msg_time,
 		userid_sender, clientid_sender, msg);
 }

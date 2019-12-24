@@ -223,10 +223,12 @@ int apply_effect_to_pcm(const char* pcmIn,
         if( ret < 0 ){
             error("apm->ProcessStream returned %d \n", ret);
         }
-        
+
         size_t L_proc_out;
+        error(" aueffect_process NULL ==start== near_frame.data_");
         aueffect_process(aue, near_frame.data_, procOut, L_proc, &L_proc_out);
-        
+        error(" aueffect_process NULL ==end== near_frame.data_");
+
         //input_resampler.Resample( bufIn, L, procIn, L_proc);
         
         //size_t L_proc_out;

@@ -5,6 +5,7 @@
 修改Android的版本 从android-16升级到android-21 使其能编译arm64-v8a
 经过修改JDK已经支持1.8
 由于源代码已经狠古老NDK还必须是版本:[android-ndk-r14b](https://developer.android.google.cn/ndk/downloads/older_releases.html?hl=zh-cn)
+旧的NDK编译后arm64 在变声有问题，修改pcm_interface.cpp 文件 229行随便添加或者注释log 然后在用最新的NDK重复执行make dist_android再次编译下
 
 
 # Wire - Audio, Video, and Signaling (AVS)
