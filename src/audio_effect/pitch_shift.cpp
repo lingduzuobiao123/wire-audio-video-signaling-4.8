@@ -93,6 +93,9 @@ void* create_pitch_down_shift(int fs_hz, int strength)
     pse->up = up_down_table[strength].up;
     pse->down = up_down_table[strength].down;
     
+    error("pitch_shift_process needs start up_down_table[strength].up: %d \n", up_down_table[strength].up);
+    error("pitch_shift_process needs start up_down_table[strength].down: %d \n", up_down_table[strength].down);
+
     time_scale_init(&pse->tscale, (fs_hz*pse->up)/pse->down, fs_hz);
     
     pse->resampler->InitializeIfNeeded(fs_hz, (fs_hz*pse->up)/pse->down, 1);
@@ -141,19 +144,20 @@ void pitch_shift_process(void *st, int16_t in[], int16_t out[], size_t L_in, siz
     }
     
     int L10_out = (L10*pse->up)/pse->down;
-    
+    // error("pitch_shift_process needs start N %d \n", N);
+    // error("pitch_shift_process needs start L10_outN %d \n", L10_out);
+    // error("pitch_shift_process needs start L10 %d \n", L10);
     int16_t tmp_buf[L10_out];
     for( int i = 0; i < N; i++){
         find_pitch_lags(&pse->pest, &in[i*L10], L10);
-
         pse->resampler->Resample( &in[i*L10], L10, tmp_buf, L10_out);
-        
         int min_pL, max_pL;
         find_min_max_pitch(pse, &min_pL, &max_pL);
-    
         time_scale_insert(&pse->tscale, tmp_buf, L10_out, max_pL, min_pL, pse->pest.voiced);
-        
+        error("pitch_shift_rocess needs 4 mid  index %d \n", i);
         time_scale_extract(&pse->tscale, &out[i*L10], L10);
+        error("pitch_shift_process needs 5 mid  index %d \n", i);
     }
+    // error("pitch_shift_process needs end max %d ms \n", MAX_L_MS);
     *L_out = L_in;
 }

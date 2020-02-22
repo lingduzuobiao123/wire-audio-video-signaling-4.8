@@ -60,7 +60,7 @@ int aueffect_alloc(struct aueffect **auep,
             strength++;
         case AUDIO_EFFECT_CHORUS_MED:
             strength++;
-        case AUDIO_EFFECT_CHORUS_MIN:
+        case AUDIO_EFFECT_CHORUS_MIN://崩溃
         case AUDIO_EFFECT_CHORUS:
         case AUDIO_EFFECT_REVERSE:
             aue->e_create_h = create_chorus;
@@ -92,13 +92,13 @@ int aueffect_alloc(struct aueffect **auep,
             aue->e_free_h = free_pitch_shift;
             aue->e_proc_h = pitch_shift_process;
             break;
-        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_INSANE:
+        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_INSANE://崩溃
             strength++;
-        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MAX:
+        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MAX://崩溃
             strength++;
-        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MED:
+        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MED://崩溃
             strength++;
-        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MIN:
+        case AUDIO_EFFECT_PITCH_DOWN_SHIFT_MIN://崩溃
         case AUDIO_EFFECT_PITCH_DOWN_SHIFT:
             aue->e_create_h = create_pitch_down_shift;
             aue->e_reset_h = NULL;
@@ -116,11 +116,11 @@ int aueffect_alloc(struct aueffect **auep,
             aue->e_proc_h = pace_shift_process;
             aue->e_length_h = pace_shift_length_factor;
             break;
-        case AUDIO_EFFECT_PACE_UP_SHIFT_MAX:
+        case AUDIO_EFFECT_PACE_UP_SHIFT_MAX://崩溃
             strength++;
-        case AUDIO_EFFECT_PACE_UP_SHIFT_MED:
+        case AUDIO_EFFECT_PACE_UP_SHIFT_MED://崩溃
             strength++;
-        case AUDIO_EFFECT_PACE_UP_SHIFT_MIN:
+        case AUDIO_EFFECT_PACE_UP_SHIFT_MIN://崩溃
             aue->e_create_h = create_pace_up_shift;
             aue->e_reset_h = NULL;
             aue->e_free_h = free_pace_shift;
@@ -161,11 +161,11 @@ int aueffect_alloc(struct aueffect **auep,
             aue->e_free_h = free_normalizer;
             aue->e_proc_h = normalizer_process;
             break;
-        case AUDIO_EFFECT_PITCH_UP_DOWN_MAX:
+        case AUDIO_EFFECT_PITCH_UP_DOWN_MAX://崩溃
             strength++;
-        case AUDIO_EFFECT_PITCH_UP_DOWN_MED:
+        case AUDIO_EFFECT_PITCH_UP_DOWN_MED://崩溃
             strength++;
-        case AUDIO_EFFECT_PITCH_UP_DOWN_MIN:
+        case AUDIO_EFFECT_PITCH_UP_DOWN_MIN://崩溃
             aue->e_create_h = create_pitch_cycler;
             aue->e_reset_h = NULL;
             aue->e_free_h = free_pitch_cycler;
@@ -182,6 +182,8 @@ int aueffect_alloc(struct aueffect **auep,
             err = -1;
             goto out;
     }
+    error("aue->effect = aue->e_create_h fs_hz:%d ", fs_hz);
+    error("aue->effect = aue->e_create_h strength:%d ", strength);
     aue->effect = aue->e_create_h(fs_hz, strength);
     if(!aue->effect){
         err = -1;
@@ -194,7 +196,7 @@ out:
     else {
         *auep = aue;
     }
-    
+    error("aue->effect = aue->e_create_h err:%d ", err);
     return err;
 }
 

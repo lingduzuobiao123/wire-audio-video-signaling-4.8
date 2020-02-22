@@ -16,38 +16,83 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+#ifndef _DELETE_FILE
+#define _DELETE_FILE
+ 
+#include <stdio.h>
+#include <stdbool.h>
+
+#ifdef ANDROID
+    #include <android/log.h>
+#endif
+
 #include "time_scale.h"
 #include <math.h>
+
+#define LOG_TAG "TIME_SCALE_JNI"
+#define DEBUG
+#define ANDROID_PLATFORM
+
+#ifdef DEBUG
+	#ifdef ANDROID
+		#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+		#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__))
+		#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__))
+		#define LOGE(...) ((void)__android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__))
+ 
+ 
+	#else
+		#define LOGD(fmt, ...) printf(fmt"\n", ##__VA_ARGS__)
+		#define LOGI(fmt, ...) printf(fmt"\n", ##__VA_ARGS__)
+		#define LOGW(fmt, ...) printf(fmt"\n", ##__VA_ARGS__)
+		#define LOGE(fmt, ...) printf(fmt"\n", ##__VA_ARGS__)
+	#endif
+#else
+	#define LOGD(...);
+	#define LOGI(...);
+	#define LOGW(...);
+	#define LOGE(...);
+#endif
 
 static void time_scale_remove_one(struct time_scale *ts, int best_d, int L)
 {
     int buf_smpls = (ts->write_idx - ts->read_idx) & TS_MASK;
+    // LOGE("pitch_shift_process time_scale_remove_one 1 best_d %d \n", best_d);
+    LOGE("pitch_shift_process time_scale_remove_one 1 buf_smpls %d \n", buf_smpls);
     if(best_d > buf_smpls){
         return;
     }
     if(buf_smpls < (2*L + best_d)){
         L = (buf_smpls - best_d) >> 1;
+        // LOGE("pitch_shift_process time_scale_remove_one 2 L %d \n", L);
     }
     int L1 = L - ts->fs_out_khz;
     int16_t buf1[2*L];
     int16_t buf2[2*L];
     int idx1 = (ts->write_idx - 2*L) & TS_MASK;
     int idx2 = (ts->write_idx - 2*L - best_d) & TS_MASK;
-    
+    // LOGE("pitch_shift_process time_scale_remove_one 3 L1 %d \n", L1);
+    // LOGE("pitch_shift_process time_scale_remove_one 3 start idx1 %d \n", idx1);
+    // LOGE("pitch_shift_process time_scale_remove_one 3 start idx2 %d \n", idx2);
     for(int i = 0; i < 2*L; i++){
         buf1[i] = ts->buf[idx1];
         buf2[i] = ts->buf[idx2];
         idx1 = (idx1 + 1) & TS_MASK;
         idx2 = (idx2 + 1) & TS_MASK;
     }
-    
+    // LOGE("pitch_shift_process time_scale_remove_one 3 mid idx1 %d \n", idx1);
+    // LOGE("pitch_shift_process time_scale_remove_one 3 mid idx2 %d \n", idx2);
     idx1 = (ts->write_idx - 2*L + L1) & TS_MASK;
     idx2 = (ts->write_idx - 2*L + L1 - best_d) & TS_MASK;
-    
+    // LOGE("pitch_shift_process time_scale_remove_one 3 end idx1 %d \n", idx1);
+    // LOGE("pitch_shift_process time_scale_remove_one 3 end idx2 %d \n", idx2);
     int L2 = ts->fs_out_khz*2;
     float win_up, win_down = 1.0f;
     float win_delta = 1.0f/L2; // ToDo use better window
     float tmp;
+    //  LOGE("pitch_shift_process time_scale_remove_one 4 start L2 %d \n", L2);
+    // LOGE("pitch_shift_process time_scale_remove_one 4 start win_delta %f \n", win_delta);
     for(int i = 0; i < L2; i++){
         win_down = win_down - win_delta;
         win_up = 1.0f - win_down;
@@ -57,12 +102,16 @@ static void time_scale_remove_one(struct time_scale *ts, int best_d, int L)
         idx1 = (idx1 + 1) & TS_MASK;
         idx2 = (idx2 + 1) & TS_MASK;
     }
+   
+    // LOGE("pitch_shift_process time_scale_remove_one 4 mid idx1 %d \n", idx1);
+    // LOGE("pitch_shift_process time_scale_remove_one 4 mid idx2 %d \n", idx2);
     for(int i = 0; i < L1; i++){
         ts->buf[idx2] = buf1[i+L1+L2];
         idx1 = (idx1 + 1) & TS_MASK;
         idx2 = (idx2 + 1) & TS_MASK;
     }
-    
+    // LOGE("pitch_shift_process time_scale_remove_one 4 end idx1 %d \n", idx1);
+    // LOGE("pitch_shift_process time_scale_remove_one 4 end idx2 %d \n", idx2);
     ts->write_idx = idx2;
 }
 
@@ -151,6 +200,7 @@ void time_scale_extract(struct time_scale* ts,
     int best_d = -1;
     int L10 = (ts->fs_in_khz*10);
     if(ts->voiced){
+        //  LOGE("pitch_shift_process time_scale_extract start 1 N %d \n", N);
         best_nc = -1.0;
         for(int d = ts->minL; d < (ts->maxL + 1); d++){
             idx1 = (ts->write_idx - 2*L10) & TS_MASK;
@@ -177,6 +227,7 @@ void time_scale_extract(struct time_scale* ts,
             best_nc = 0.1f;
         }
     } else {
+        // LOGE("pitch_shift_process time_scale_extract start 2 N %d \n", N);
         best_d = L10;
         best_nc = 0.1f;
     }
@@ -184,12 +235,15 @@ void time_scale_extract(struct time_scale* ts,
     int buf_smpls = (ts->write_idx - ts->read_idx) & TS_MASK;
     
     if(buf_smpls > ts->fs_out_khz*45){
+        LOGE("pitch_shift_process time_scale_extract mid 1 start buf_smpls %d \n", buf_smpls);
         /* Buffer is growing shorten the signal */
         while(buf_smpls > ts->fs_out_khz*45){
             time_scale_remove_one(ts, best_d, 2*L10);
             buf_smpls = (ts->write_idx - ts->read_idx) & TS_MASK;
         }
+        LOGE("pitch_shift_process time_scale_extract mid 1 end buf_smpls %d \n", buf_smpls); 
     } else {
+        // LOGE("pitch_shift_process time_scale_extract mid 2 buf_smpls %d \n", buf_smpls);
         /* Buffer is shrinking expand the signal */
         if(buf_smpls < ts->fs_out_khz*35){
             float nc_thres = 0.75 - (float)(ts->fs_out_khz*35 - buf_smpls)*ts->nc_bufsz_fac;
@@ -208,8 +262,11 @@ void time_scale_extract(struct time_scale* ts,
             buf_smpls = (ts->write_idx - ts->read_idx) & TS_MASK;
         }
     }
+    LOGE("pitch_shift_process time_scale_extract end N %d \n", N);
     for( int i = 0; i < N; i++){
         out[i] = ts->buf[ts->read_idx];
         ts->read_idx = (ts->read_idx + 1) & TS_MASK;
     }
 }
+
+#endif
